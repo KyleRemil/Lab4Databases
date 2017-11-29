@@ -14,73 +14,56 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Department;
+import model.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MainMenuController {
-
+public class EmployeeController {
     @FXML
-    private TableView<Department> departmentTable;
+    private TableView<Employee> employeeTableView;
     @FXML
-    private TableColumn<Department, String> Dname;
+    private TableColumn<Employee, String> fname, lname;
     @FXML
-    private TableColumn<Department, Integer> Dnumber;
-    @FXML
-    private TableColumn<Department, Integer> Mgr_ssn;
-    @FXML
-    private TableColumn<Department, String> Dlocation;
-    @FXML
-    private Button employeeBtn;
+    private TableColumn<Employee, Integer> supper_ssn, dno, ssn;
 
     private Stage stage;
     private AnchorPane root;
     private Scene scene;
 
-    @FXML
     public void initialize() {
-//        stationListView.setItems(getStationList());
-        departmentTable.setItems(getDepartmentList());
+        employeeTableView.setItems(getEmployeeList());
 
-
-
-        Dname.setCellValueFactory(new PropertyValueFactory<Department, String>("Dname"));
-        Dnumber.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Dnumber"));
-        Mgr_ssn.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Mgr_ssn"));
-        Dlocation.setCellValueFactory(new PropertyValueFactory<Department, String>("Dlocation"));
-
-//        departmentTable.setItems(getDepartmentList());
+        fname.setCellValueFactory(new PropertyValueFactory<Employee, String>("Fname"));
+        lname.setCellValueFactory(new PropertyValueFactory<Employee, String>("Lname"));
+        supper_ssn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("Supper_ssn"));
+        dno.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("Dno"));
+        ssn.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("Ssn"));
     }
-
-    public ObservableList<Department>/*<String>*/  getDepartmentList()
+    public ObservableList<Employee>/*<String>*/  getEmployeeList()
     {
-        ObservableList<Department>/*<String>*/ departments = FXCollections.observableArrayList();
+        ObservableList<Employee>/*<String>*/ employees = FXCollections.observableArrayList();
 
-        String SQLQuery = "select Dname, Dnumber, Mgr_ssn, Dlocation FROM department";
-
-        //ResultSet rs = null;
+        String SQLQuery = "select Fname, Lname, Super_ssn, Dno, Ssn FROM employee";
 
         try(
                 Connection conn = DbConnector.getConnection();
                 PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
                 ResultSet resultSet = displayprofile.executeQuery();
         ){
-            //displayprofile.setInt(1, cutomerId);
-            //rs = displayprofile.executeQuery();
-
-            // check to see if receiving any data
             while (resultSet.next()){
-                departments.add(new Department(resultSet.getString("Dname"), resultSet.getString("Dlocation"),
-                        resultSet.getInt("Dnumber"), resultSet.getInt("Mgr_ssn") ));
+                employees.add(new Employee(resultSet.getString("Fname"), resultSet.getString("Lname"),
+                        resultSet.getInt("Super_ssn"), resultSet.getInt("Dno"),
+                        resultSet.getInt("Ssn")) );
 
             }
         }catch(SQLException ex){
             DbConnector.displayException(ex);
             return null;
         }
-        return departments;
+        return employees;
     }
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

@@ -13,74 +13,52 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.Department;
+import model.Employee;
+import model.WorksOn;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MainMenuController {
-
+public class WorksOnController {
     @FXML
-    private TableView<Department> departmentTable;
+    private TableView<WorksOn> worksonTableView;
     @FXML
-    private TableColumn<Department, String> Dname;
-    @FXML
-    private TableColumn<Department, Integer> Dnumber;
-    @FXML
-    private TableColumn<Department, Integer> Mgr_ssn;
-    @FXML
-    private TableColumn<Department, String> Dlocation;
-    @FXML
-    private Button employeeBtn;
+    private TableColumn<WorksOn, Integer> essn, pno, hours;
 
     private Stage stage;
     private AnchorPane root;
     private Scene scene;
 
-    @FXML
     public void initialize() {
-//        stationListView.setItems(getStationList());
-        departmentTable.setItems(getDepartmentList());
+        worksonTableView.setItems(getWorksonList());
 
-
-
-        Dname.setCellValueFactory(new PropertyValueFactory<Department, String>("Dname"));
-        Dnumber.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Dnumber"));
-        Mgr_ssn.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Mgr_ssn"));
-        Dlocation.setCellValueFactory(new PropertyValueFactory<Department, String>("Dlocation"));
-
-//        departmentTable.setItems(getDepartmentList());
+        essn.setCellValueFactory(new PropertyValueFactory<WorksOn, Integer>("Essn"));
+        pno.setCellValueFactory(new PropertyValueFactory<WorksOn, Integer>("Pno"));
+        hours.setCellValueFactory(new PropertyValueFactory<WorksOn, Integer>("Hours"));
     }
-
-    public ObservableList<Department>/*<String>*/  getDepartmentList()
+    public ObservableList<WorksOn>/*<String>*/  getWorksonList()
     {
-        ObservableList<Department>/*<String>*/ departments = FXCollections.observableArrayList();
+        ObservableList<WorksOn>/*<String>*/ worksOns = FXCollections.observableArrayList();
 
-        String SQLQuery = "select Dname, Dnumber, Mgr_ssn, Dlocation FROM department";
-
-        //ResultSet rs = null;
+        String SQLQuery = "select Essn, Pno, Hours FROM works_on";
 
         try(
                 Connection conn = DbConnector.getConnection();
                 PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
                 ResultSet resultSet = displayprofile.executeQuery();
         ){
-            //displayprofile.setInt(1, cutomerId);
-            //rs = displayprofile.executeQuery();
-
-            // check to see if receiving any data
             while (resultSet.next()){
-                departments.add(new Department(resultSet.getString("Dname"), resultSet.getString("Dlocation"),
-                        resultSet.getInt("Dnumber"), resultSet.getInt("Mgr_ssn") ));
+                worksOns.add(new WorksOn(resultSet.getInt("Essn"), resultSet.getInt("Pno"),
+                        resultSet.getInt("Hours")) );
 
             }
         }catch(SQLException ex){
             DbConnector.displayException(ex);
             return null;
         }
-        return departments;
+        return worksOns;
     }
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -106,4 +84,5 @@ public class MainMenuController {
         scene = new Scene(root);
         stage.setScene(scene);
     }
+
 }

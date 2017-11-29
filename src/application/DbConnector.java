@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector {
-    public static class WilderTestDBConfig {
-
         private static final String USERNAME = "rootLab44889";
         private static final String PASSWORD = "rootLab44889!";
         private static final String CONN_STRING = "jdbc:mysql://50.62.209.41:3306/Lab4";
@@ -16,15 +14,11 @@ public class DbConnector {
             //System.out.println("Connected to student database successfully!");
             return DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
         }
+    public static void displayException(SQLException ex) {
 
-        // method that displays our errors in more detail if connection fails
-        public static void displayException(SQLException ex) {
-
-            System.err.println("Error Message: " + ex.getMessage());
-            System.err.println("Error Code: " + ex.getErrorCode());
-            System.err.println("SQL Status: " + ex.getSQLState());
-
-        }
+        System.err.println("Error Message: " + ex.getMessage());
+        System.err.println("Error Code: " + ex.getErrorCode());
+        System.err.println("SQL Status: " + ex.getSQLState());
 
     }
 }
