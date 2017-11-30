@@ -47,7 +47,7 @@ public class WorksOnController {
         try(
                 Connection conn = DbConnector.getConnection();
                 PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
-                ResultSet resultSet = displayprofile.executeQuery();
+                ResultSet resultSet = displayprofile.executeQuery()
         ){
             while (resultSet.next()){
                 worksOns.add(new WorksOn(resultSet.getInt("Essn"), resultSet.getInt("Pno"),
