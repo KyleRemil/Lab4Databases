@@ -38,6 +38,7 @@
             <TextField fx:id="Fname" promptText="Fname" />
             <TextField fx:id="Lname" promptText="Lname" />
             <TextField fx:id="Mgr_ssn" promptText="Super_ssn" />
+            <TextField fx:id="Mgr_ssn1" promptText="Dno" />
             <TextField fx:id="Dlocation" promptText="Ssn" />
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
          </children>
