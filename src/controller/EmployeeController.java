@@ -32,7 +32,7 @@ public class EmployeeController {
     private TableColumn<Employee, Integer> supper_ssn, dno, ssn;
 
     @FXML
-    private TextField fnameInput, lnameInput, super_ssnInput, ssnInput;
+    private TextField fnameInput, lnameInput, super_ssnInput, ssnInput, dnoInput;
 
     private Stage stage;
     private AnchorPane root;
@@ -70,81 +70,147 @@ public class EmployeeController {
         }
         return employees;
     }
-//    public void insertDepartment(){
-//        String fname = fnameInput.getText();
-//        String lanme = lnameInput.getText();
-//        String supper_ssn = super_ssnInput.getText();
-//
-//
-//        System.out.println(
-//                "dName: " + dName +"\n"+
-//                        "dNumber: "+ dNumber+"\n"+
-//                        "mgr_ssn: "+ mgr_ssn+"\n"+
-//                        "dlocation: "+ dlocation+"\n"
-//        );
-//        if(validateDname(dName) == false || validateDnumber(dNumber) == false
-//                || validateMgr_ssn(mgr_ssn) == false || validateDlocation(dlocation) == false){
-//            return;
-//        }
-//
-//        //table 'department', columns: 'Dname' String, 'Dnumber' int, 'Mgr_ssn' int, 'Dlocation' String
-//        /*
-//        INSERT INTO department(Dname, Dnumber, Mgr_ssn, Dlocation)
-//        VALUES('testDepartment', 77, 777333888, 'testLocation');
-//        */
-//
-//        String sqlQuery = "INSERT INTO department(Dname, Dnumber, Mgr_ssn, Dlocation) " +
-//                "VALUES("+"'"+dName+"', "+dNumber+", "+mgr_ssn+", "+"'"+dlocation+"');";
-//
-//        try {
-//            Connection conn = DbConnector.getConnection();
-//            PreparedStatement displayprofile = conn.prepareStatement(sqlQuery);
-//            displayprofile.executeUpdate();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        initialize();
-//    }
-//    private boolean validateDname(String dName){
-//        if(dName.length() > 15) {
-//            System.out.println("Dname Length");
-//            return false;
-//        }
-//        ArrayList<Character> chars = new ArrayList<>();
-//        for(int i = 0; i <dName.length(); i++){
-//            chars.add(dName.charAt(i));
-//        } //TODO change all of the && to seperate properly
-//        for(int i = 0; i < chars.size(); i++){
-//            int ascii = (int)chars.get(i);
-//            //A: 65, Z: 90, a:97, z:122
-//            if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
-//                System.out.println("invalid Danme character");
-//                return false;
-//            }
-//
-//        }
-//        return true;
-//    }
-//    private boolean validateDlocation(String dLocation){
-//        if(dLocation.length() > 9) {
-//            System.out.println("invalid Dlocation Length");
-//            return false;
-//        }
-//        ArrayList<Character> chars = new ArrayList<>();
-//        for(int i = 0; i <dLocation.length(); i++){
-//            chars.add(dLocation.charAt(i));
-//        }
-//        for(int i = 0; i < chars.size(); i++){
-//            int ascii = (int)chars.get(i);
-//            //A: 65, Z: 90, a:97, z:122
-//            if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
-//                System.out.println("invalid Dlocation character");
-//                return false;
-//            }
-//
-//        }
-//        return true;
-//    }
+    public void insertEmployee(){
+        String fname = fnameInput.getText();
+        String lname = lnameInput.getText();
+        String supper_ssn = super_ssnInput.getText();
+        String dno = dnoInput.getText();
+        String ssn = ssnInput.getText();
+        //TODO to input employee super_ssn must match an existing employee SSN
+        //TODO check to make sure employee SSN is not already in the table
+
+        System.out.println(
+                "fname: " + fname +"\n"+
+                        "lname: "+ lname+"\n"+
+                        "supper_ssn: "+ supper_ssn+"\n"+
+                        "dno: "+ dno+"\n"+
+                        "ssn: "+ ssn+"\n"
+        );
+        if(validateFname(fname) == false || validateLname(lname) == false
+                || validateSuper_ssn(supper_ssn) == false || validateDno(dno) == false || validateSsn(ssn) == false){
+            return;
+        }
+
+        //Fname: varchar(15), Lname: varchar(15), Supper_ssn: varchar(9), Dno: int(11), Ssn: varchar(9)
+        /*
+        INSERT INTO employee(Fname, Lname, Super_ssn, Dno, Ssn)
+        VALUES('Testing', 'Tezting', '987654321', 81, '555333222');
+        */
+
+        String sqlQuery = "INSERT INTO employee(Fname, Lname, Super_ssn, Dno, Ssn) " +
+                "VALUES("+"'"+fname+"', '"+lname+"', '"+supper_ssn+"', "+dno+", '"+ssn+"');";
+
+        try {
+            Connection conn = DbConnector.getConnection();
+            PreparedStatement displayprofile = conn.prepareStatement(sqlQuery);
+            displayprofile.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        initialize();
+    }
+    private boolean validateFname(String fname){
+        if(fname.length() > 15) {
+            System.out.println("fname Length");
+            return false;
+        }
+        ArrayList<Character> chars = new ArrayList<>();
+        for(int i = 0; i <fname.length(); i++){
+            chars.add(fname.charAt(i));
+        }
+        for(int i = 0; i < chars.size(); i++){
+            int ascii = (int)chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
+                System.out.println("invalid fname character");
+                return false;
+            }
+
+        }
+        return true;
+    }
+    private boolean validateLname(String lname){
+        if(lname.length() > 15) {
+            System.out.println("Lname Length");
+            return false;
+        }
+        ArrayList<Character> chars = new ArrayList<>();
+        for(int i = 0; i <lname.length(); i++){
+            chars.add(lname.charAt(i));
+        }
+        for(int i = 0; i < chars.size(); i++){
+            int ascii = (int)chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
+                System.out.println("invalid Lname character");
+                return false;
+            }
+
+        }
+        return true;
+    }
+    private boolean validateSuper_ssn(String supper_ssn){
+        if(supper_ssn.length() > 9) {
+            System.out.println("supper_ssn Length");
+            return false;
+        }
+        ArrayList<Character> chars = new ArrayList<>();
+        for(int i = 0; i <supper_ssn.length(); i++){
+            chars.add(supper_ssn.charAt(i));
+        }
+        for(int i = 0; i < chars.size(); i++){
+            int ascii = (int)chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if((ascii < 48 || ascii > 57)){
+                System.out.println("invalid supper_ssn character");
+                return false;
+            }
+
+        }
+        return true;
+    }
+    private boolean validateDno(String dno){
+        if(dno.length() > 11) {
+            System.out.println("invalidDnumber Length");
+            return false;
+        }
+        //0: 48, 9: 57
+        ArrayList<Character> characters = new ArrayList<>();
+        String dNumString = String.valueOf(dno);
+        for(int i = 0; i < dNumString.length(); i++){
+            characters.add(dno.charAt(i));
+        }
+        for(int i =0; i < dNumString.length(); i ++){
+            int ascii = (int)characters.get(i);
+            if(ascii < 48 || ascii > 57){
+                System.out.println("invalidDnumber character");
+
+                return false;
+            }
+
+        }
+        return true;
+    }
+    private boolean validateSsn(String ssn){
+        if(ssn.length() > 9) {
+            System.out.println("invalid dnum Length");
+            return false;
+        }
+        ArrayList<Character> chars = new ArrayList<>();
+        for(int i = 0; i <ssn.length(); i++){
+            chars.add(ssn.charAt(i));
+        }
+        for(int i = 0; i < chars.size(); i++){
+            int ascii = (int)chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if(ascii < 48 || ascii > 57){
+                System.out.println("invalid dnum character");
+                return false;
+            }
+
+        }
+        return true;
+    }
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/projectView.fxml"));

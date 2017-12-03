@@ -38,5 +38,6 @@
             <Button fx:id="addDepartmentBtn" mnemonicParsing="false" onAction="#insertDepartment" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
          </children>
       </VBox>
+      <Button layoutX="96.0" layoutY="449.0" mnemonicParsing="false" onAction="#toCustomQuery" text="Button" />
    </children>
 </AnchorPane>

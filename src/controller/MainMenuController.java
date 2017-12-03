@@ -35,7 +35,7 @@ public class MainMenuController {
     @FXML
     private TableColumn<Department, String> Dlocation;
     @FXML
-    private Button employeeBtn, addDepartmentBtn;
+    private Button employeeBtn, addDepartmentBtn, toQuery;
     @FXML
     private TextField dnameInput, dnumberInput, mgr_ssnInput, dlocationInput;
 
@@ -48,61 +48,61 @@ public class MainMenuController {
         departmentTable.setItems(getDepartmentList());
 
 
-
         Dname.setCellValueFactory(new PropertyValueFactory<Department, String>("Dname"));
         Dnumber.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Dnumber"));
         Mgr_ssn.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Mgr_ssn"));
         Dlocation.setCellValueFactory(new PropertyValueFactory<Department, String>("Dlocation"));
 
     }
+
     //TODO SQLException. Remeber to make some thing to show the user SQL errors.
-    public ObservableList<Department>/*<String>*/  getDepartmentList()
-    {
+    public ObservableList<Department>/*<String>*/  getDepartmentList() {
         ObservableList<Department>/*<String>*/ departments = FXCollections.observableArrayList();
 
         String SQLQuery = "select Dname, Dnumber, Mgr_ssn, Dlocation FROM department";
 
-        try(
+        try (
                 Connection conn = DbConnector.getConnection();
                 PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
                 ResultSet resultSet = displayprofile.executeQuery()
-        ){
-            while (resultSet.next()){
+        ) {
+            while (resultSet.next()) {
                 departments.add(new Department(resultSet.getString("Dname"), resultSet.getString("Dlocation"),
-                        resultSet.getInt("Dnumber"), resultSet.getInt("Mgr_ssn") ));
+                        resultSet.getInt("Dnumber"), resultSet.getInt("Mgr_ssn")));
 
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             DbConnector.displayException(ex);
             return null;
         }
         return departments;
     }
-    public void insertDepartment(){
+
+    public void insertDepartment() {
         String dName = dnameInput.getText();
         String dNumber = dnumberInput.getText();
         String mgr_ssn = mgr_ssnInput.getText();
         String dlocation = dlocationInput.getText();
 
         System.out.println(
-                "dName: " + dName +"\n"+
-                        "dNumber: "+ dNumber+"\n"+
-                        "mgr_ssn: "+ mgr_ssn+"\n"+
-                        "dlocation: "+ dlocation+"\n"
+                "dName: " + dName + "\n" +
+                        "dNumber: " + dNumber + "\n" +
+                        "mgr_ssn: " + mgr_ssn + "\n" +
+                        "dlocation: " + dlocation + "\n"
         );
-        if(validateDname(dName) == false || validateDnumber(dNumber) == false
-                || validateMgr_ssn(mgr_ssn) == false || validateDlocation(dlocation) == false){
+        if (validateDname(dName) == false || validateDnumber(dNumber) == false
+                || validateMgr_ssn(mgr_ssn) == false || validateDlocation(dlocation) == false) {
             return;
         }
 
-            //table 'department', columns: 'Dname' String, 'Dnumber' int, 'Mgr_ssn' int, 'Dlocation' String
+        //table 'department', columns: 'Dname' String, 'Dnumber' int, 'Mgr_ssn' int, 'Dlocation' String
         /*
         INSERT INTO department(Dname, Dnumber, Mgr_ssn, Dlocation)
         VALUES('testDepartment', 77, 777333888, 'testLocation');
         */
 
         String sqlQuery = "INSERT INTO department(Dname, Dnumber, Mgr_ssn, Dlocation) " +
-                "VALUES("+"'"+dName+"', "+dNumber+", "+mgr_ssn+", "+"'"+dlocation+"');";
+                "VALUES(" + "'" + dName + "', " + dNumber + ", " + mgr_ssn + ", " + "'" + dlocation + "');";
 
         try {
             Connection conn = DbConnector.getConnection();
@@ -113,110 +113,125 @@ public class MainMenuController {
         }
         initialize();
     }
-    private boolean validateDname(String dName){
-        if(dName.length() > 15) {
+
+    private boolean validateDname(String dName) {
+        if (dName.length() > 15) {
             System.out.println("Dname Length");
             return false;
         }
-            ArrayList<Character> chars = new ArrayList<>();
-            for(int i = 0; i <dName.length(); i++){
-                chars.add(dName.charAt(i));
-            } //TODO change all of the && to seperate properly
-            for(int i = 0; i < chars.size(); i++){
-                int ascii = (int)chars.get(i);
-                //A: 65, Z: 90, a:97, z:122
-                if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
-                    System.out.println("invalid Danme character");
-                    return false;
-                }
+        ArrayList<Character> chars = new ArrayList<>();
+        for (int i = 0; i < dName.length(); i++) {
+            chars.add(dName.charAt(i));
+        } //TODO change all of the && to seperate properly
+        for (int i = 0; i < chars.size(); i++) {
+            int ascii = (int) chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if ((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)) {
+                System.out.println("invalid Danme character");
+                return false;
+            }
 
         }
         return true;
     }
-    private boolean validateMgr_ssn(String mgr_ssn){
-        if(mgr_ssn.length() != 9) {
+
+    private boolean validateMgr_ssn(String mgr_ssn) {
+        if (mgr_ssn.length() != 9) {
             System.out.println("invalid mgr_ssn Length");
             return false;
         }
-            //0: 48, 9: 57
-            ArrayList<Character> characters = new ArrayList<>();
-            for(int i = 0; i < mgr_ssn.length(); i++){
-                characters.add(mgr_ssn.charAt(i));
+        //0: 48, 9: 57
+        ArrayList<Character> characters = new ArrayList<>();
+        for (int i = 0; i < mgr_ssn.length(); i++) {
+            characters.add(mgr_ssn.charAt(i));
+        }
+        for (int i = 0; i < mgr_ssn.length(); i++) {
+            int ascii = (int) characters.get(i);
+            if (ascii < 48 || ascii > 57) {
+                System.out.println("invalid mgr_ssn char");
+                return false;
             }
-            for(int i =0; i < mgr_ssn.length(); i ++){
-                int ascii = (int)characters.get(i);
-                if(ascii < 48 || ascii > 57){
-                    System.out.println("invalid mgr_ssn char");
-                    return false;
-                }
 
         }
         return true;
     }
-    private boolean validateDlocation(String dLocation){
-        if(dLocation.length() > 9) {
+
+    private boolean validateDlocation(String dLocation) {
+        if (dLocation.length() > 9) {
             System.out.println("invalid Dlocation Length");
             return false;
         }
-            ArrayList<Character> chars = new ArrayList<>();
-            for(int i = 0; i <dLocation.length(); i++){
-                chars.add(dLocation.charAt(i));
+        ArrayList<Character> chars = new ArrayList<>();
+        for (int i = 0; i < dLocation.length(); i++) {
+            chars.add(dLocation.charAt(i));
+        }
+        for (int i = 0; i < chars.size(); i++) {
+            int ascii = (int) chars.get(i);
+            //A: 65, Z: 90, a:97, z:122
+            if ((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)) {
+                System.out.println("invalid Dlocation character");
+                return false;
             }
-            for(int i = 0; i < chars.size(); i++){
-                int ascii = (int)chars.get(i);
-                //A: 65, Z: 90, a:97, z:122
-                if((ascii < 65 || ascii > 90) && (ascii < 97 || ascii > 122)){
-                    System.out.println("invalid Dlocation character");
-                    return false;
-                }
 
         }
         return true;
     }
-    private boolean validateDnumber(String dNum){
-        if(dNum.length() > 11) {
+
+    private boolean validateDnumber(String dNum) {
+        if (dNum.length() > 11) {
             System.out.println("invalidDnumber Length");
             return false;
         }
-            //0: 48, 9: 57
-            ArrayList<Character> characters = new ArrayList<>();
-            String dNumString = String.valueOf(dNum);
-            for(int i = 0; i < dNumString.length(); i++){
-                characters.add(dNum.charAt(i));
-            }
-            for(int i =0; i < dNumString.length(); i ++){
-                int ascii = (int)characters.get(i);
-                if(ascii < 48 || ascii > 57){
-                    System.out.println("invalidDnumber character");
+        //0: 48, 9: 57
+        ArrayList<Character> characters = new ArrayList<>();
+        String dNumString = String.valueOf(dNum);
+        for (int i = 0; i < dNumString.length(); i++) {
+            characters.add(dNum.charAt(i));
+        }
+        for (int i = 0; i < dNumString.length(); i++) {
+            int ascii = (int) characters.get(i);
+            if (ascii < 48 || ascii > 57) {
+                System.out.println("invalidDnumber character");
 
-                    return false;
-                }
+                return false;
+            }
 
         }
         return true;
     }
+
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/projectView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
     }
+
     public void toEmployeeView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/employeeView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
     }
+
     public void toDepartmentView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/departmentView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
     }
+
     public void toWorksonView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/worksonView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
+    }
+
+    public void toCustomQuery(ActionEvent event) throws Exception {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        root = FXMLLoader.load(getClass().getResource("../view/queryView.fxml"));
+        scene = new Scene(root);
+        stage.setScene(scene);//kjh
     }
 }

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="641.0" prefWidth="1118.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeController">
+<AnchorPane prefHeight="641.0" prefWidth="1118.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmployeeController">
    <children>
       <TableView fx:id="employeeTableView" layoutX="269.0" layoutY="152.0" prefHeight="360.0" prefWidth="580.0">
         <columns>
@@ -35,12 +33,12 @@
       <VBox layoutX="27.0" layoutY="198.0" prefHeight="128.0" prefWidth="190.0">
          <children>
             <TextField alignment="TOP_CENTER" text="Insert into employee" />
-            <TextField fx:id="Fname" promptText="Fname" />
-            <TextField fx:id="Lname" promptText="Lname" />
-            <TextField fx:id="Mgr_ssn" promptText="Super_ssn" />
-            <TextField fx:id="Mgr_ssn1" promptText="Dno" />
-            <TextField fx:id="Dlocation" promptText="Ssn" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
+            <TextField fx:id="fnameInput" promptText="Fname" />
+            <TextField fx:id="lnameInput" promptText="Lname" />
+            <TextField fx:id="super_ssnInput" promptText="Super_ssn" />
+            <TextField fx:id="dnoInput" promptText="Dno" />
+            <TextField fx:id="ssnInput" promptText="Ssn" />
+            <Button mnemonicParsing="false" onAction="#insertEmployee" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
          </children>
       </VBox>
    </children>
