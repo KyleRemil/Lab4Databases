@@ -49,7 +49,7 @@ public class ProjectController {
         try(
                 Connection conn = DbConnector.getConnection();
                 PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
-                ResultSet resultSet = displayprofile.executeQuery();
+                ResultSet resultSet = displayprofile.executeQuery()
         ){
             while (resultSet.next()){
                 projects.add(new Project(resultSet.getString("Pname"), resultSet.getInt("Pnumber"),
