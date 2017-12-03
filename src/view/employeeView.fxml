@@ -44,5 +44,6 @@
          </children>
       </VBox>
       <TextArea fx:id="MetaDataAreaEmployee" layoutX="876.0" layoutY="319.0" prefHeight="200.0" prefWidth="224.0" />
+        <Button fx:id="createDatabase" layoutX="484.0" layoutY="533.0" mnemonicParsing="false" onAction="#createDatabase" text="No Database? Click HERE" />
    </children>
 </AnchorPane>

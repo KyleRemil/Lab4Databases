@@ -30,7 +30,7 @@
       <Button fx:id="projectBtn" layoutX="244.0" layoutY="569.0" mnemonicParsing="false" onAction="#toProjectView" prefHeight="117.0" prefWidth="244.0" text="Project" />
       <Button fx:id="departmentBtn" layoutX="488.0" layoutY="569.0" mnemonicParsing="false" onAction="#toDepartmentView" prefHeight="117.0" prefWidth="244.0" text="Department" />
       <Button fx:id="worksonBtn" layoutX="732.0" layoutY="569.0" mnemonicParsing="false" onAction="#toWorksonView" prefHeight="117.0" prefWidth="244.0" text="Works_on" />
-      <Button layoutX="895.0" layoutY="176.0" mnemonicParsing="false" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" onAction="#metdataMethod"/>
+      <Button layoutX="895.0" layoutY="176.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
       <VBox layoutX="27.0" layoutY="222.0" prefHeight="128.0" prefWidth="190.0">
          <children>
             <TextField alignment="TOP_CENTER" text="Insert into project" />
@@ -42,5 +42,6 @@
          </children>
       </VBox>
       <TextArea fx:id="MetaDataProject" layoutX="877.0" layoutY="331.0" prefHeight="200.0" prefWidth="200.0" />
+        <Button fx:id="createDatabase" layoutX="47.0" layoutY="479.0" mnemonicParsing="false" onAction="#createDatabase" text="No Database? Click HERE" />
    </children>
 </AnchorPane>

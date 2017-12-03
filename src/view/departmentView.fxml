@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
    <children>
       <Label alignment="CENTER" layoutX="-2.0" layoutY="-1.0" prefHeight="143.0" prefWidth="1110.0" text="Lab 4 Company Database Main Menu">
          <font>
@@ -31,7 +31,7 @@
       <Button fx:id="projectBtn" layoutX="244.0" layoutY="683.0" mnemonicParsing="false" onAction="#toProjectView" prefHeight="117.0" prefWidth="244.0" text="Project" />
       <Button fx:id="departmentBtn" layoutX="488.0" layoutY="683.0" mnemonicParsing="false" onAction="#toDepartmentView" prefHeight="117.0" prefWidth="244.0" text="Department" />
       <Button fx:id="worksonBtn" layoutX="732.0" layoutY="683.0" mnemonicParsing="false" onAction="#toWorksonView" prefHeight="117.0" prefWidth="244.0" text="Works_on" />
-      <Button fx:id="metadatabutton" layoutX="884.0" layoutY="212.0" mnemonicParsing="false" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" onAction="#metdataMethod"/>
+      <Button fx:id="metadatabutton" layoutX="884.0" layoutY="212.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
       <VBox layoutX="44.0" layoutY="205.0" prefHeight="128.0" prefWidth="190.0">
          <children>
             <TextField alignment="TOP_CENTER" text="Insert into department" />
@@ -43,7 +43,10 @@
            </children>
         </VBox>
      </children>
-
-      <TextArea fx:id="MetaDataArea" layoutX="853.0" layoutY="368.0" prefHeight="291.0" prefWidth="225.0" />
+   <children>
+   
+         <TextArea fx:id="MetaDataArea" layoutX="853.0" layoutY="368.0" prefHeight="291.0" prefWidth="225.0" />
+      <Button fx:id="createDatabase" layoutX="479.0" layoutY="610.0" mnemonicParsing="false" onAction="#createDatabase" text="No Database? Click HERE" />
+   </children>
 
 </AnchorPane>

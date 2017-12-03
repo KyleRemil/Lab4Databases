@@ -29,7 +29,7 @@
       <Button fx:id="departmentBtn" layoutX="498.0" layoutY="589.0" mnemonicParsing="false" onAction="#toDepartmentView" prefHeight="117.0" prefWidth="244.0" text="Department" />
       <Button fx:id="projectBtn" layoutX="254.0" layoutY="589.0" mnemonicParsing="false" onAction="#toProjectView" prefHeight="117.0" prefWidth="244.0" text="Project" />
       <Button fx:id="worksonBtn" layoutX="742.0" layoutY="589.0" mnemonicParsing="false" onAction="#toWorksonView" prefHeight="117.0" prefWidth="244.0" text="Works_on" />
-      <Button layoutX="897.0" layoutY="149.0" mnemonicParsing="false" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" onAction="#metdataMethod"/>
+      <Button layoutX="897.0" layoutY="149.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
       <Pane layoutX="879.0" layoutY="303.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <TextArea fx:id="MetaDataWorksOn" prefHeight="200.0" prefWidth="200.0" />
@@ -43,5 +43,6 @@
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
          </children>
       </VBox>
+         <Button fx:id="createDatabase" layoutX="514.0" layoutY="532.0" mnemonicParsing="false" onAction="#createDatabase" text="No Database? Click HERE" />
    </children>
 </AnchorPane>
