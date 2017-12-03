@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MainMenuController {
@@ -36,7 +37,7 @@ public class MainMenuController {
     @FXML
     private TableColumn<Department, String> Dlocation;
     @FXML
-    private Button employeeBtn, addDepartmentBtn;
+    private Button employeeBtn, addDepartmentBtn, createDatabase;
     @FXML
     private TextField dnameInput, dnumberInput, mgr_ssnInput, dlocationInput;
     @FXML
@@ -56,6 +57,40 @@ public class MainMenuController {
         Dnumber.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Dnumber"));
         Mgr_ssn.setCellValueFactory(new PropertyValueFactory<Department, Integer>("Mgr_ssn"));
         Dlocation.setCellValueFactory(new PropertyValueFactory<Department, String>("Dlocation"));
+
+    }
+    public void createDatabase(ActionEvent event) throws Exception{
+    	String departmentCreator = "CREATE TABLE `department` (  `Dname` varchar(15) NOT NULL,  `Dnumber` int(11) NOT NULL,  `Mgr_ssn` char(9) DEFAULT NULL,  `Dlocation` varchar(9) DEFAULT NULL,  PRIMARY KEY (`Dnumber`),  UNIQUE KEY `Dname` (`Dname`),  KEY `Mgr_ssn` (`Mgr_ssn`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+		Statement stmt = null;
+
+
+		try {
+	        Connection conn = DbConnector.getConnection();
+	        PreparedStatement displayprofile = conn.prepareStatement("Show create table department;");
+	        ResultSet resultSet = displayprofile.executeQuery();
+			while (resultSet.next()) {
+
+				String database = resultSet.getString("Create Table");
+				String databasetester = "";
+				// if the table is empty
+				if (database != databasetester) {
+					MetaDataArea.setText("The department table already exists");
+					System.out.println("The department table already exists");
+					// System.out.println(database);
+				} else {
+
+					System.out.println("Database is missing the department");
+					String query = departmentCreator;
+					stmt = conn.createStatement();
+					resultSet = stmt.executeQuery(query);
+					System.out.println("department table added");
+
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
     //TODO SQLException. Remeber to make some thing to show the user SQL errors.

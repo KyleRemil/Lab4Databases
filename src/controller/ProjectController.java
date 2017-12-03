@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ProjectController {
     @FXML
@@ -66,6 +67,41 @@ public class ProjectController {
         }
         return projects;
     }
+    @SuppressWarnings("resource")
+ 	public void createDatabase(ActionEvent event) throws Exception{
+    	String projectCreator = "CREATE TABLE `project` (  `Pname` varchar(15) NOT NULL,  `Pnumber` int(11) NOT NULL,  `Plocation` varchar(15) DEFAULT NULL,  `Dnum` int(11) NOT NULL,  PRIMARY KEY (`Pnumber`),  UNIQUE KEY `Pname` (`Pname`),  KEY `Dnum` (`Dnum`),  CONSTRAINT `project_ibfk_1` FOREIGN KEY (`Dnum`) REFERENCES `department` (`Dnumber`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+    	Statement stmt = null;
+
+
+ 		try {
+ 	        Connection conn = DbConnector.getConnection();
+ 	        PreparedStatement displayprofile = conn.prepareStatement("Show create table employee;");
+ 	        ResultSet resultSet = displayprofile.executeQuery();
+ 			while (resultSet.next()) {
+
+ 				String database = resultSet.getString("Create Table");
+ 				String databasetester = "";
+ 				// if the table is empty
+ 				if (database != databasetester) {
+ 					MetaDataProject.setText("The project table already exists");
+ 					System.out.println("The project table already exists");
+ 					// System.out.println(database);
+ 				} else {
+
+ 					System.out.println("Database is missing the project table");
+ 					String query = projectCreator;
+ 					stmt = conn.createStatement();
+ 					resultSet = stmt.executeQuery(query);
+ 					System.out.println("project table added");
+
+ 				}
+ 			}
+ 		} catch (SQLException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+
+     }
     public void metdataMethod(ActionEvent event) throws SQLException {
         String SQLQuery = "show create table project;";
         Connection conn = DbConnector.getConnection();

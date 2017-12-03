@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class WorksOnController {
     @FXML
@@ -65,6 +66,41 @@ public class WorksOnController {
         }
         return worksOns;
     }
+    @SuppressWarnings("resource")
+ 	public void createDatabase(ActionEvent event) throws Exception{
+    	String worksonCreator = "CREATE TABLE `works_on` (  `Essn` char(9) NOT NULL,  `Pno` int(11) NOT NULL,  `Hours` int(11) DEFAULT NULL,  PRIMARY KEY (`Essn`,`Pno`),  KEY `Pno` (`Pno`),  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`Pno`) REFERENCES `project` (`Pnumber`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+    	Statement stmt = null;
+
+
+ 		try {
+ 	        Connection conn = DbConnector.getConnection();
+ 	        PreparedStatement displayprofile = conn.prepareStatement("Show create table employee;");
+ 	        ResultSet resultSet = displayprofile.executeQuery();
+ 			while (resultSet.next()) {
+
+ 				String database = resultSet.getString("Create Table");
+ 				String databasetester = "";
+ 				// if the table is empty
+ 				if (database != databasetester) {
+ 					MetaDataWorksOn.setText("The works_on table already exists");
+ 					System.out.println("The works_on table already exists");
+ 					// System.out.println(database);
+ 				} else {
+
+ 					System.out.println("Database is missing the works_on table");
+ 					String query = worksonCreator;
+ 					stmt = conn.createStatement();
+ 					resultSet = stmt.executeQuery(query);
+ 					System.out.println("works_on table added");
+
+ 				}
+ 			}
+ 		} catch (SQLException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+
+     }
     public void metdataMethod(ActionEvent event) throws SQLException {
         String SQLQuery = "show create table works_on;";
         Connection conn = DbConnector.getConnection();

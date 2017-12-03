@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class EmployeeController {
@@ -31,6 +32,8 @@ public class EmployeeController {
     private TableColumn<Employee, String> fname, lname;
     @FXML
     private TableColumn<Employee, Integer> supper_ssn, dno, ssn;
+    @FXML
+    private Button createDatabase;
 
     @FXML
     private TextField fnameInput, lnameInput, super_ssnInput, ssnInput;
@@ -72,6 +75,42 @@ public class EmployeeController {
             return null;
         }
         return employees;
+    }
+    
+    @SuppressWarnings("resource")
+	public void createDatabase(ActionEvent event) throws Exception{
+    	String employeeCreator = "CREATE TABLE `employee` (  `Fname` varchar(15) NOT NULL,  `Lname` varchar(15) NOT NULL,  `Super_ssn` varchar(9) DEFAULT NULL,  `Dno` int(11) NOT NULL DEFAULT '1',  `Ssn` varchar(9) DEFAULT NULL,  PRIMARY KEY (`Fname`),  UNIQUE KEY `Ssn` (`Ssn`),  KEY `Super_ssn` (`Super_ssn`),  KEY `Dno` (`Dno`),  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ssn`) REFERENCES `employee` (`Ssn`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+		Statement stmt = null;
+
+
+		try {
+	        Connection conn = DbConnector.getConnection();
+	        PreparedStatement displayprofile = conn.prepareStatement("Show create table employee;");
+	        ResultSet resultSet = displayprofile.executeQuery();
+			while (resultSet.next()) {
+
+				String database = resultSet.getString("Create Table");
+				String databasetester = "";
+				// if the table is empty
+				if (database != databasetester) {
+					MetaDataAreaEmployee.setText("The employee table already exists");
+					System.out.println("The employee table already exists");
+					// System.out.println(database);
+				} else {
+
+					System.out.println("Database is missing the employee table");
+					String query = employeeCreator;
+					stmt = conn.createStatement();
+					resultSet = stmt.executeQuery(query);
+					System.out.println("employee table added");
+
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     }
 //    public void insertDepartment(){
 //        String fname = fnameInput.getText();
