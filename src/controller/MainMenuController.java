@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -38,6 +39,8 @@ public class MainMenuController {
     private Button employeeBtn, addDepartmentBtn;
     @FXML
     private TextField dnameInput, dnumberInput, mgr_ssnInput, dlocationInput;
+    @FXML
+    private TextArea MetaDataArea;
 
     private Stage stage;
     private AnchorPane root;
@@ -77,6 +80,16 @@ public class MainMenuController {
             return null;
         }
         return departments;
+    }
+    public void metdataMethod(ActionEvent event) throws SQLException {
+        String SQLQuery = "show create table department;";
+        Connection conn = DbConnector.getConnection();
+        PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
+        ResultSet resultSet = displayprofile.executeQuery();
+    	if(resultSet.next()) {
+    		MetaDataArea.setText(resultSet.getString(2));
+    	}
+
     }
     public void insertDepartment(){
         String dName = dnameInput.getText();

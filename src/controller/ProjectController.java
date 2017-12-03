@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -27,11 +28,14 @@ public class ProjectController {
     private TableColumn<Project, String> pName, pLocation;
     @FXML
     private TableColumn<Project, Integer> pNumber, dNum;
+    @FXML
+    private TextArea MetaDataProject;
+    private Button metadatabutton;
 
     private Stage stage;
     private AnchorPane root;
     private Scene scene;
-
+    @FXML
     public void initialize() {
         projectTableView.setItems(getProjectList());
 
@@ -61,6 +65,15 @@ public class ProjectController {
             return null;
         }
         return projects;
+    }
+    public void metdataMethod(ActionEvent event) throws SQLException {
+        String SQLQuery = "show create table project;";
+        Connection conn = DbConnector.getConnection();
+        PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
+        ResultSet resultSet = displayprofile.executeQuery();
+    	if(resultSet.next()) {
+    		MetaDataProject.setText(resultSet.getString(2));
+    	}
     }
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

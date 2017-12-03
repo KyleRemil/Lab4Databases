@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -33,10 +34,12 @@ public class EmployeeController {
 
     @FXML
     private TextField fnameInput, lnameInput, super_ssnInput, ssnInput;
-
+    @FXML
+    private TextArea MetaDataAreaEmployee;
     private Stage stage;
     private AnchorPane root;
     private Scene scene;
+    @FXML
 
     public void initialize() {
         employeeTableView.setItems(getEmployeeList());
@@ -145,6 +148,15 @@ public class EmployeeController {
 //        }
 //        return true;
 //    }
+    public void metdataMethod(ActionEvent event) throws SQLException {
+        String SQLQuery = "show create table employee;";
+        Connection conn = DbConnector.getConnection();
+        PreparedStatement displayprofile = conn.prepareStatement(SQLQuery);
+        ResultSet resultSet = displayprofile.executeQuery();
+    	if(resultSet.next()) {
+    		MetaDataAreaEmployee.setText(resultSet.getString(2));
+    	}
+    }
     public void toProjectView(ActionEvent event) throws Exception {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         root = FXMLLoader.load(getClass().getResource("../view/projectView.fxml"));
