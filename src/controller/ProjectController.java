@@ -80,9 +80,9 @@ public class ProjectController {
  			while (resultSet.next()) {
 
  				String database = resultSet.getString("Create Table");
- 				String databasetester = "";
+
  				// if the table is empty
- 				if (database != databasetester) {
+ 				if (database != "Table 'company.project' doesn't exist") {
  					MetaDataProject.setText("The project table already exists");
  					System.out.println("The project table already exists");
  					// System.out.println(database);

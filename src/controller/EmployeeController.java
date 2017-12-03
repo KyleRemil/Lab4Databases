@@ -90,9 +90,9 @@ public class EmployeeController {
 			while (resultSet.next()) {
 
 				String database = resultSet.getString("Create Table");
-				String databasetester = "";
+
 				// if the table is empty
-				if (database != databasetester) {
+				if (database != "Table 'company.employee' doesn't exist") {
 					MetaDataAreaEmployee.setText("The employee table already exists");
 					System.out.println("The employee table already exists");
 					// System.out.println(database);

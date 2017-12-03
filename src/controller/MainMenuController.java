@@ -59,7 +59,8 @@ public class MainMenuController {
         Dlocation.setCellValueFactory(new PropertyValueFactory<Department, String>("Dlocation"));
 
     }
-    public void createDatabase(ActionEvent event) throws Exception{
+    @SuppressWarnings("resource")
+	public void createDatabase(ActionEvent event) throws Exception{
     	String departmentCreator = "CREATE TABLE `department` (  `Dname` varchar(15) NOT NULL,  `Dnumber` int(11) NOT NULL,  `Mgr_ssn` char(9) DEFAULT NULL,  `Dlocation` varchar(9) DEFAULT NULL,  PRIMARY KEY (`Dnumber`),  UNIQUE KEY `Dname` (`Dname`),  KEY `Mgr_ssn` (`Mgr_ssn`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
 		Statement stmt = null;
 
@@ -71,9 +72,9 @@ public class MainMenuController {
 			while (resultSet.next()) {
 
 				String database = resultSet.getString("Create Table");
-				String databasetester = "";
+
 				// if the table is empty
-				if (database != databasetester) {
+				if (database != "Table 'company.department' doesn't exist") {
 					MetaDataArea.setText("The department table already exists");
 					System.out.println("The department table already exists");
 					// System.out.println(database);

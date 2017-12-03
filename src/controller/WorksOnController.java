@@ -79,9 +79,9 @@ public class WorksOnController {
  			while (resultSet.next()) {
 
  				String database = resultSet.getString("Create Table");
- 				String databasetester = "";
+
  				// if the table is empty
- 				if (database != databasetester) {
+ 				if (database != "Table 'company.works_on' doesn't exist") {
  					MetaDataWorksOn.setText("The works_on table already exists");
  					System.out.println("The works_on table already exists");
  					// System.out.println(database);
