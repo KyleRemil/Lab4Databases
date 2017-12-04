@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="662.0" prefWidth="1118.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProjectController">
-   <children>
-      <Label alignment="CENTER" layoutX="8.0" layoutY="9.0" prefHeight="143.0" prefWidth="1110.0" text="Lab 4 Company Database Main Menu">
-         <font>
-            <Font size="65.0" />
-         </font>
-      </Label>
-      <Button fx:id="employeeBtn" layoutY="569.0" mnemonicParsing="false" onAction="#toEmployeeView" prefHeight="117.0" prefWidth="244.0" text="Employee" />
-      <TableView fx:id="projectTableView" layoutX="237.0" layoutY="131.0" prefHeight="425.0" prefWidth="626.0">
-        <columns>
-          <TableColumn fx:id="pName" prefWidth="75.0" text="Pname" />
-          <TableColumn fx:id="pNumber" prefWidth="75.0" text="Pnumber" />
-            <TableColumn fx:id="pLocation" prefWidth="75.0" text="Plocation" />
-            <TableColumn fx:id="dNum" prefWidth="75.0" text="Dnum" />
-        </columns>
-      </TableView>
-      <Button fx:id="projectBtn" layoutX="244.0" layoutY="569.0" mnemonicParsing="false" onAction="#toProjectView" prefHeight="117.0" prefWidth="244.0" text="Project" />
-      <Button fx:id="departmentBtn" layoutX="488.0" layoutY="569.0" mnemonicParsing="false" onAction="#toDepartmentView" prefHeight="117.0" prefWidth="244.0" text="Department" />
-      <Button fx:id="worksonBtn" layoutX="732.0" layoutY="569.0" mnemonicParsing="false" onAction="#toWorksonView" prefHeight="117.0" prefWidth="244.0" text="Works_on" />
-      <Button layoutX="895.0" layoutY="176.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
-      <VBox layoutX="27.0" layoutY="222.0" prefHeight="128.0" prefWidth="190.0">
-         <children>
-            <TextField alignment="TOP_CENTER" text="Insert into project" />
-            <TextField fx:id="Pname" promptText="Pname" />
-            <TextField fx:id="Pnumber" promptText="Pnumber" />
-            <TextField fx:id="Plocation" promptText="Plocation" />
-            <TextField fx:id="Dnum" promptText="Dnum" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
-         </children>
-      </VBox>
-      <TextArea fx:id="MetaDataProject" layoutX="877.0" layoutY="331.0" prefHeight="200.0" prefWidth="200.0" />
-        <Button fx:id="createDatabase" layoutX="47.0" layoutY="479.0" mnemonicParsing="false" onAction="#createDatabase" text="No Database? Click HERE" />
-   </children>
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProjectController">
+    <children>
+        <Label alignment="CENTER" layoutX="8.0" layoutY="9.0" prefHeight="143.0" prefWidth="1110.0" text="Lab 4 Company Database Main Menu">
+            <font>
+                <Font size="65.0" />
+            </font>
+        </Label>
+        <Button fx:id="employeeBtn" layoutX="8.0" layoutY="673.0" mnemonicParsing="false" onAction="#toEmployeeView" prefHeight="117.0" prefWidth="244.0" text="Employee" />
+        <TableView fx:id="projectTableView" layoutX="237.0" layoutY="131.0" prefHeight="425.0" prefWidth="303.0">
+            <columns>
+                <TableColumn fx:id="pName" prefWidth="75.0" text="Pname" />
+                <TableColumn fx:id="pNumber" prefWidth="75.0" text="Pnumber" />
+                <TableColumn fx:id="pLocation" prefWidth="75.0" text="Plocation" />
+                <TableColumn fx:id="dNum" prefWidth="75.0" text="Dnum" />
+            </columns>
+        </TableView>
+        <Button fx:id="projectBtn" layoutX="252.0" layoutY="673.0" mnemonicParsing="false" onAction="#toProjectView" prefHeight="117.0" prefWidth="244.0" text="Project" />
+        <Button fx:id="departmentBtn" layoutX="496.0" layoutY="673.0" mnemonicParsing="false" onAction="#toDepartmentView" prefHeight="117.0" prefWidth="244.0" text="Department" />
+        <Button fx:id="worksonBtn" layoutX="740.0" layoutY="673.0" mnemonicParsing="false" onAction="#toWorksonView" prefHeight="117.0" prefWidth="244.0" text="Works_on" />
+        <Button layoutX="895.0" layoutY="176.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
+        <VBox layoutX="24.0" layoutY="131.0" prefHeight="128.0" prefWidth="190.0">
+            <children>
+                <TextField alignment="TOP_CENTER" text="Insert into project" />
+                <TextField fx:id="pnameInput" promptText="Pname" />
+                <TextField fx:id="pnumberInput" promptText="Pnumber" />
+                <TextField fx:id="plocationInput" promptText="Plocation" />
+                <TextField fx:id="dnumberInput" promptText="Dnumber" />
+                <Button mnemonicParsing="false" onAction="#insertProject" prefHeight="25.0" prefWidth="197.0" text="Add to Database" />
+            </children>
+        </VBox>
+        <TextArea fx:id="MetaDataProject" layoutX="877.0" layoutY="331.0" prefHeight="200.0" prefWidth="200.0" />
+        <Button layoutX="8.0" layoutY="556.0" mnemonicParsing="false" onAction="#toCustomQuery" prefHeight="117.0" prefWidth="244.0" text="CustomQuery" />
+        <TextArea fx:id="javaErrors" editable="false" layoutX="31.0" layoutY="375.0" prefHeight="150.0" prefWidth="200.0" promptText="Errors caught in java" />
+        <Label layoutX="30.0" layoutY="338.0" prefHeight="25.0" prefWidth="200.0" text="Custom Validation Errors" />
+        <Button layoutX="24.0" layoutY="281.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="190.0" text="Delete" />
+      <Button layoutX="278.0" layoutY="602.0" mnemonicParsing="false" onAction="#createDatabase" text="Dont see a database? Create One" />
+    </children>
 </AnchorPane>
