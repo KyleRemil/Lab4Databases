@@ -15,6 +15,7 @@ import model.Project;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ProjectController {
     @FXML
@@ -24,7 +25,7 @@ public class ProjectController {
     @FXML
     private TableColumn<Project, Integer> pNumber, dNum;
     @FXML
-    private TextArea MetaDataProject, javaErrors;
+    private TextArea MetaDataProject, javaErrors, sqlErrors;
     private Button metadatabutton;
 
     @FXML
@@ -77,8 +78,50 @@ public class ProjectController {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
 
+    }
+    public void deleteCascade(){
+        String pnum = pnumberInput.getText();
+//        System.out.println(dnum);
+//        String checkDepartmentMgr_ssnQuery = "SELECT Ssn FROM employee WHERE Super_ssn ='"+ssn+"'";
+//        ArrayList<String> queryList1 = new ArrayList<>();
+
+        try{
+            Connection conn = DbConnector.getConnection();
+//            PreparedStatement checkDepartmentMgr_ssn = conn.prepareStatement(checkDepartmentMgr_ssnQuery);
+//            ResultSet departmentMgr_ssnResults = checkDepartmentMgr_ssn.executeQuery();
+//            if(departmentMgr_ssnResults.next() == true){
+//                errors = errors + "FK Mgr_ssn "+ssn+" in department";
+            Alert alert = new Alert(Alert.AlertType.WARNING, "FK Pnumber "+pnum+" in other tables. DO you want to override?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> deleteAlert = alert.showAndWait();
+            if(deleteAlert.get() == ButtonType.YES){
+                /*
+                SELECT Pnumber FROM project where Dnum = 5
+                 */
+                Statement statement = conn.createStatement();
+//                ResultSet resultSet1 = statement.executeQuery("SELECT Pnumber FROM project WHERE Dnum ="+dnum);
+//                while (resultSet1.next()){
+//                    queryList1.add(resultSet1.getString("Pnumber"));
+//                }
+//                for(int i = 0; i <queryList1.size(); i++){
+//                    statement.executeUpdate("DELETE FROM works_on WHERE Pno ="+queryList1.get(i));
+////                    System.out.println(queryList1.get(i));
+//                }
+                statement.executeUpdate("DELETE FROM works_on WHERE Pno ="+pnum);
+                statement.executeUpdate("DELETE FROM project WHERE Pnumber ="+pnum);
+
+            }
+
+//            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            sqlErrors.setText(e.toString());
+            return;
+
+        }
     }
     public ObservableList<Project>/*<String>*/  getProjectList()
     {
@@ -98,6 +141,7 @@ public class ProjectController {
             }
         }catch(SQLException ex){
             DbConnector.displayException(ex);
+            sqlErrors.setText(ex.toString());
             return null;
         }
         return projects;
@@ -182,6 +226,7 @@ public class ProjectController {
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
     }
@@ -205,10 +250,17 @@ public class ProjectController {
                 "' AND Dnum ="+dnum;
         try {
             Connection conn = DbConnector.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT Pno FROM works_on WHERE Pno ="+pnumber);
+            if(resultSet.next() == true){
+                deleteCascade();
+                return;
+            }
             PreparedStatement displayprofile = conn.prepareStatement(sqlQuery);
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
 

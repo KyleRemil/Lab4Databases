@@ -7,11 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,6 +15,7 @@ import model.Department;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class MainMenuController {
 
@@ -37,7 +34,7 @@ public class MainMenuController {
     @FXML
     private TextField dnameInput, dnumberInput, mgr_ssnInput, dlocationInput;
     @FXML
-    private TextArea MetaDataArea, javaErrors;
+    private TextArea MetaDataArea, javaErrors, sqlErrors;
 
     private Stage stage;
     private AnchorPane root;
@@ -88,10 +85,51 @@ public class MainMenuController {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
 
     }
+    public void deleteCascade(){
+        String dnum = dnumberInput.getText();
+//        System.out.println(dnum);
+//        String checkDepartmentMgr_ssnQuery = "SELECT Ssn FROM employee WHERE Super_ssn ='"+ssn+"'";
+        ArrayList<String> queryList1 = new ArrayList<>();
 
+        try{
+            Connection conn = DbConnector.getConnection();
+//            PreparedStatement checkDepartmentMgr_ssn = conn.prepareStatement(checkDepartmentMgr_ssnQuery);
+//            ResultSet departmentMgr_ssnResults = checkDepartmentMgr_ssn.executeQuery();
+//            if(departmentMgr_ssnResults.next() == true){
+//                errors = errors + "FK Mgr_ssn "+ssn+" in department";
+            Alert alert = new Alert(Alert.AlertType.WARNING, "FK Dnumber "+dnum+" in other tables. DO you want to override?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> deleteAlert = alert.showAndWait();
+            if(deleteAlert.get() == ButtonType.YES){
+                /*
+                SELECT Pnumber FROM project where Dnum = 5
+                 */
+                Statement statement = conn.createStatement();
+                ResultSet resultSet1 = statement.executeQuery("SELECT Pnumber FROM project WHERE Dnum ="+dnum);
+                while (resultSet1.next()){
+                    queryList1.add(resultSet1.getString("Pnumber"));
+                }
+                for(int i = 0; i <queryList1.size(); i++){
+                    statement.executeUpdate("DELETE FROM works_on WHERE Pno ="+queryList1.get(i));
+//                    System.out.println(queryList1.get(i));
+                }
+                statement.executeUpdate("DELETE FROM project WHERE Dnum ="+dnum);
+                statement.executeUpdate("DELETE FROM department WHERE Dnumber ="+dnum);
+
+            }
+
+//            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            sqlErrors.setText(e.toString());
+            return;
+
+        }
+    }
     //TODO SQLException. Remeber to make some thing to show the user SQL errors.
     public ObservableList<Department>/*<String>*/  getDepartmentList() {
         ObservableList<Department>/*<String>*/ departments = FXCollections.observableArrayList();
@@ -110,6 +148,7 @@ public class MainMenuController {
             }
         } catch (SQLException ex) {
             DbConnector.displayException(ex);
+            sqlErrors.setText(ex.toString());
             return null;
         }
         return departments;
@@ -199,6 +238,7 @@ public class MainMenuController {
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
     }
@@ -222,10 +262,18 @@ public class MainMenuController {
                 " AND Dlocation ='"+dlocation+"'";
         try {
             Connection conn = DbConnector.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT Pnumber FROM project WHERE Dnum ="+dNumber);
+            if(resultSet.next() == true){
+                deleteCascade();
+                return;
+            }
+
             PreparedStatement displayprofile = conn.prepareStatement(sqlQuery);
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
 

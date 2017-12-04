@@ -48,5 +48,7 @@
       <Label layoutX="28.0" layoutY="388.0" prefHeight="25.0" prefWidth="200.0" text="Custom Validation Errors" />
       <Button layoutX="27.0" layoutY="333.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="190.0" text="Delete" />
       <Button layoutX="295.0" layoutY="570.0" mnemonicParsing="false" onAction="#createDatabase" text="Dont see a database? Create One" />
+      <TextArea fx:id="sqlErrors" editable="false" layoutX="669.0" layoutY="324.0" prefHeight="200.0" prefWidth="200.0" promptText="Errors" />
+      <Label contentDisplay="CENTER" layoutX="672.0" layoutY="277.0" prefHeight="25.0" prefWidth="193.0" text="SQL Errors" />
    </children>
 </AnchorPane>

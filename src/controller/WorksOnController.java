@@ -23,7 +23,7 @@ public class WorksOnController {
     @FXML
     private TableColumn<WorksOn, Integer> essn, pno, hours;
     @FXML
-    private TextArea MetaDataWorksOn, javaErrors;
+    private TextArea MetaDataWorksOn, javaErrors, sqlErrors;
     @FXML
     private TextField essnInput, pnoInput, hoursInput;
 
@@ -72,6 +72,7 @@ public class WorksOnController {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
 
     }
@@ -93,6 +94,7 @@ public class WorksOnController {
             }
         }catch(SQLException ex){
             DbConnector.displayException(ex);
+            sqlErrors.setText(ex.toString());
             return null;
         }
         return worksOns;
@@ -173,6 +175,7 @@ public class WorksOnController {
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
     }
@@ -198,6 +201,7 @@ public class WorksOnController {
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
 

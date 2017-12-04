@@ -8,11 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -22,6 +18,7 @@ import model.Employee;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EmployeeController {
     @FXML
@@ -34,7 +31,7 @@ public class EmployeeController {
     @FXML
     private TextField fnameInput, lnameInput, super_ssnInput, ssnInput, dnoInput;
     @FXML
-    private TextArea MetaDataAreaEmployee, javaErrors;
+    private TextArea MetaDataAreaEmployee, javaErrors, sqlErrors;
     private Stage stage;
     private AnchorPane root;
     private Scene scene;
@@ -87,6 +84,34 @@ public class EmployeeController {
         }
 
     }
+    public void deleteCascade(){
+        String ssn = ssnInput.getText();
+        String checkDepartmentMgr_ssnQuery = "SELECT Ssn FROM employee WHERE Super_ssn ='"+ssn+"'";
+
+        try{
+            Connection conn = DbConnector.getConnection();
+//            PreparedStatement checkDepartmentMgr_ssn = conn.prepareStatement(checkDepartmentMgr_ssnQuery);
+//            ResultSet departmentMgr_ssnResults = checkDepartmentMgr_ssn.executeQuery();
+//            if(departmentMgr_ssnResults.next() == true){
+//                errors = errors + "FK Mgr_ssn "+ssn+" in department";
+                Alert alert = new Alert(Alert.AlertType.WARNING, "FK Mgr_ssn "+ssn+" in department. DO you want to override?", ButtonType.YES, ButtonType.NO);
+
+                Optional<ButtonType> deleteAlert = alert.showAndWait();
+                if(deleteAlert.get() == ButtonType.YES){
+                    String deleteQuery = "DELETE FROM employee WHERE Super_ssn ='"+ssn+"'";
+                    Statement deleteAllUnderSuper = conn.createStatement();
+                    deleteAllUnderSuper.executeUpdate(deleteQuery);
+
+                }
+
+//            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            sqlErrors.setText(e.toString());
+            return;
+
+        }
+    }
     public ObservableList<Employee>/*<String>*/  getEmployeeList()
     {
         ObservableList<Employee>/*<String>*/ employees = FXCollections.observableArrayList();
@@ -106,6 +131,7 @@ public class EmployeeController {
             }
         }catch(SQLException ex){
             DbConnector.displayException(ex);
+            sqlErrors.setText(ex.toString());
             return null;
         }
         return employees;
@@ -178,6 +204,7 @@ public class EmployeeController {
             displayprofile.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            sqlErrors.setText(e.toString());
         }
         initialize();
     }
@@ -187,7 +214,6 @@ public class EmployeeController {
         String supper_ssn = super_ssnInput.getText();
         String dno = dnoInput.getText();
         String ssn = ssnInput.getText();
-
         /*
         DELETE FROM testing
         WHERE testInt = 3
@@ -200,8 +226,16 @@ public class EmployeeController {
          */
         String sqlQuery = "DELETE FROM employee WHERE Fname ='"+fname+"' AND Lname ='"+lname+"' AND Super_ssn ='"+supper_ssn+
                 "' AND Dno ="+dno+" AND Ssn ='"+ssn+"'";
+
+        String superConstraintQuery = "SELECT Ssn FROM employee WHERE Super_ssn='"+ssn+"'";
         try {
             Connection conn = DbConnector.getConnection();
+            Statement superConstraint = conn.createStatement();
+            ResultSet constraintResults = superConstraint.executeQuery(superConstraintQuery);
+            if(constraintResults.next() == true){
+                deleteCascade();
+            }
+
             PreparedStatement displayprofile = conn.prepareStatement(sqlQuery);
             displayprofile.executeUpdate();
         } catch (Exception e) {

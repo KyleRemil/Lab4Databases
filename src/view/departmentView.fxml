@@ -31,7 +31,7 @@
         <Button layoutX="884.0" layoutY="212.0" mnemonicParsing="false" onAction="#metdataMethod" prefHeight="128.0" prefWidth="163.0" text="Show Metadata" />
         <VBox layoutX="44.0" layoutY="161.0" prefHeight="128.0" prefWidth="190.0">
             <children>
-                <TextField alignment="TOP_CENTER" text="Insert into department" />
+                <TextField alignment="TOP_CENTER" editable="false" text="Insert into department" />
                 <TextField fx:id="dnameInput" promptText="Dname" />
                 <TextField fx:id="dnumberInput" promptText="Dnumber" />
                 <TextField fx:id="mgr_ssnInput" promptText="Mgr_ssn" />
@@ -45,5 +45,7 @@
         <Label layoutX="38.0" layoutY="375.0" prefHeight="25.0" prefWidth="200.0" text="Custom Validation Errors" />
         <Button layoutX="45.0" layoutY="311.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="190.0" text="Delete" />
       <Button layoutX="311.0" layoutY="604.0" mnemonicParsing="false" onAction="#createDatabase" text="Dont see a database? Create One" />
+      <TextArea fx:id="sqlErrors" editable="false" layoutX="632.0" layoutY="362.0" prefHeight="200.0" prefWidth="200.0" promptText="Errors" />
+      <Label contentDisplay="CENTER" layoutX="635.0" layoutY="315.0" prefHeight="25.0" prefWidth="193.0" text="SQL Errors" />
     </children>
 </AnchorPane>
