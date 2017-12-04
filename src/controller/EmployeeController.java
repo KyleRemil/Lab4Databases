@@ -56,6 +56,7 @@ public class EmployeeController {
         String employeeCreator = "CREATE TABLE `employee` (  `Fname` varchar(15) NOT NULL,  `Lname` varchar(15) NOT NULL,  `Super_ssn` varchar(9) DEFAULT NULL,  `Dno` int(11) NOT NULL DEFAULT '1',  `Ssn` varchar(9) DEFAULT NULL,  PRIMARY KEY (`Fname`),  UNIQUE KEY `Ssn` (`Ssn`),  KEY `Super_ssn` (`Super_ssn`),  KEY `Dno` (`Dno`),  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ssn`) REFERENCES `employee` (`Ssn`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
         Statement stmt = null;
 
+//changes
 
         try {
             Connection conn = DbConnector.getConnection();
